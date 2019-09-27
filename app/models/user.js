@@ -27,11 +27,14 @@ var UserSchema = new mongoose.Schema({
   }
 }) 
 
-// 数据存储以前
+// 数据存储以前 存储也是个中间件
 UserSchema.pre('save', function(next) {
-  if(!this.isNew) {
+  if(this.isNew) {
+    this.meta.createAt = this.meta.updateAt = Date.now()
+  } else {
     this.meta.updateAt = Date.now()
   }
+  next()
 })
 
 module.exports = mongoose.model('User', UserSchema)

@@ -4,10 +4,17 @@
 var fs = require('fs')
 var path = require('path')
 var mongoose = require('mongoose')
-var db = 'mongoose://localhost/oahc-web'
+var db = 'mongodb://localhost/oahc-web'
 
 mongoose.Promise = require('bluebird')
-mongoose.connect(db)
+mongoose.set('useCreateIndex', true) 
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }, err => {
+  if(err){  
+　  console.log('Connection Error:' + err)  
+　}else{   
+　  console.log('Connection success!')
+  }  
+})
 
 var models_path = path.join(__dirname, '/app/models')    // __dirname当前目录层级
 
@@ -15,7 +22,7 @@ var walk = function(modelPath) {
   // fs的readdirSync 同步读取modelPath下文件 并对其遍历
   fs
     .readdirSync(modelPath)  
-    .forEach(function() {
+    .forEach(function(file) {
       var filePath = path.join(modelPath, '/' + file)   // 拼接完整路径
       var stat = fs.statSync(filePath)           // 当前文件的状态
 
@@ -24,13 +31,14 @@ var walk = function(modelPath) {
         if (/(.*)\.(js|coffee)/.test(file)) {
           require(filePath)
         }
-      } 
-      else  if (stat.isDirectory){
+      } else if (stat.isDirectory()){
         // 是否是目录 
         walk(filePath)
       }
     })
 }
+
+walk(models_path)
 // 加载数据模型文件 end
 
 var koa = require('koa')

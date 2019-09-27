@@ -1,22 +1,13 @@
 'use strict'
 
-exports.signup = function *(next) {
-  this.body = {
-    success: true,
-    text: 'signup'
-  }
-}
+// var xss = require('xss')
+// var mongoose = require('mongoose')
+// var User = mongoose.model('User')
 
-exports.verify = function *(next) {
-  this.body = {
+exports.test = async (ctx, next) => {
+  ctx.body = {
     success: true,
-    text: 'verify'
+    tel: ctx.query.tel
   }
-}
-
-exports.update = function *(next) {
-  this.body = {
-    success: true,
-    text: 'update'
-  }
+  return next
 }

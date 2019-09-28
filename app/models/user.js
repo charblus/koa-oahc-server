@@ -37,4 +37,9 @@ UserSchema.pre('save', function(next) {
   next()
 })
 
+/**
+ * 定义模型User
+ * 模型用来实现我们定义的模式，调用mongoose.model来编译Schema得到Model
+ * 
+ * */
 module.exports = mongoose.model('User', UserSchema)

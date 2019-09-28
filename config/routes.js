@@ -16,9 +16,9 @@ module.exports = function() {
 
   // user
   router.get('/test',  User.test)
-  // router.post('/u/signup', User.signup)
-  // router.post('/u/verify', User.verify)
-  // router.post('/u/update', User.update)
+  router.post('/u/signup', User.signup)
+  router.post('/u/verify', User.verify)
+  router.post('/u/update', User.update)
 
   // app
   router.post('/signature', App.signature)   // 加密的签名

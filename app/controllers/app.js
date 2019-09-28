@@ -1,7 +1,8 @@
 'use strict'
 
-exports.signature = function *(next) {
-  this.body = {
+exports.signature = async (ctx, next) => {
+  ctx.body = {
     success: true
   }
+  await next()
 }

@@ -29,5 +29,12 @@ exports.signup = function *(next) {
 这是ES6的新feature，function 后面带 * 的叫做generator。
 在generator内部你可以使用 yield 语句
 
+* async ... await  异步语法
+
 
 #### koa
+
+
+#### mongoose
+[nodejs中文社区这篇帖子对mongoose的用法总结的不错](https://cnodejs.org/topic/548e54d157fd3ae46b233502)
+

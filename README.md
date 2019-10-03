@@ -32,9 +32,31 @@ exports.signup = function *(next) {
 * async ... await  异步语法
 
 
+promise 要用then接收
+```
+getProvince().then(data => {
+        this.provinces = data
+})
+```
+或者await async
+```
+async function test() {
+    this.provinces = await getProvince();
+}
+```
+
 #### koa
+基于promise的优秀模块, 比如bluebird, q等等
 
 
 #### mongoose
 [nodejs中文社区这篇帖子对mongoose的用法总结的不错](https://cnodejs.org/topic/548e54d157fd3ae46b233502)
 
+
+
+
+
+#### 阿里云 子用户 RAM 编程访问
+用户登录名称 oahcoay@1190284634751640.onaliyun.com
+AccessKey ID LTAI4Fi1P9jxdkb8S18uYf1A
+AccessKeySecret uP4Y8wnZ5uoDDVFXUnVxTtMIkgcgEM

@@ -17,6 +17,7 @@ module.exports = function() {
   // user
   router.get('/test',  User.test)
   router.post('/u/signup', User.signup)
+  router.post('/u/sendmsg', User.sendmsg)
   router.post('/u/verify', User.verify)
   router.post('/u/update', User.update)
 

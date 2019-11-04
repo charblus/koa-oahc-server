@@ -1,4 +1,4 @@
-'use strict'
+ 'use strict'
 
 var Router = require('koa-router')
 var User = require('../app/controllers/user')
@@ -16,10 +16,10 @@ module.exports = function() {
 
   // user
   router.get('/test',  User.test)
-  router.post('/u/signup', User.signup)
+  router.post('/u/signup', App.hasBody, User.signup)
   router.post('/u/sendmsg', User.sendmsg)
   router.post('/u/verify', User.verify)
-  router.post('/u/update', User.update)
+  router.post('/u/update', App.hasBody, App.hasToken, User.update)
 
   // app
   router.post('/signature', App.signature)   // 加密的签名

@@ -78,11 +78,28 @@ exports.signup = async (ctx, next) => {
 exports.update = async (ctx, next) => {
   var body = ctx.request.body
   var user = ctx.session.user
+  var fields = 'avatar,gender,age,nickname,breed'.split(',')
+
+  fields.forEach(function(field) {
+    if (body[field]) {
+      user[field] = xss(body[field].trim())
+    }
+  })
+
+  user = await user.save()
+
   ctx.body = {
-    success: true,
-    text: 'update'
+    code: 1,
+    data: {
+      nickname: user.nickname,
+      accessToken: user.accessToken,
+      avatar: user.avatar,
+      age: user.age,
+      breed: user.breed,
+      gender: user.gender,
+      _id: user._id
+    }
   }
-  await next()
 }
 
 /**
@@ -90,6 +107,7 @@ exports.update = async (ctx, next) => {
  * */
 
 exports.sendmsg = async (ctx, next) => {
+
   var phoneNumber = ctx.request.body.phoneNumber
   var number = ''
   for(var i = 0; i < 6; i++) {

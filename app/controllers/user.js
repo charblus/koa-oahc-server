@@ -3,6 +3,7 @@
 var xss = require('xss')
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
+var uuid = require('uuid')
 
 var SMSClient = require('@alicloud/sms-sdk')
 var config = require('../../config/config')
@@ -22,55 +23,53 @@ exports.test = async (ctx, next) => {
  * 注册用户信息
  * */
 exports.signup = async (ctx, next) => {
-  var phoneNumber = ctx.request.body.phoneNumber
-  var verifyCode = ctx.request.body.verifyCode 
-
-  // var verifyCode = sms.getCode()
-
-  // console.log('124', ctx)
+  var phoneNumber = xss(ctx.request.body.phoneNumber.trim())
   var user = await User.findOne({
     phoneNumber: phoneNumber
   }).exec()
   console.log(user)  // null 是db没有
+
+  // var verifyCode = ctx.request.body.verifyCode 
+  var verifyCode = Math.floor(Math.random()*10000+1)
+  // console.log(verifyCode)
+
+  var password = ctx.request.body.password
+  // console.log(password)
+
   if (!user) {
     var accessToken = uuid.v4()
 
     user = new User({
-      nickname: '爱因斯坦',
-      avatar: 'http://res.cloudinary.com/gougou/image/upload/mooc1.png',
+      nickname: '测试用户',
+      avatar: 'https://img.cdn.apipost.cn/statics/portrait.png',
       phoneNumber: xss(phoneNumber),
       verifyCode: verifyCode,
+      password: password,
       accessToken: accessToken
     })
   } else {
-    user.verifyCode = verifyCode
+    ctx.body = {
+      success: false,
+      msg: '用户已存在'
+    }
+    return next
   }
 
   try {
     user = await user.save()
     ctx.body = {
-      success: true
+      success: true,
+      msg: '注册成功'
     }
   } catch (e) {
     ctx.body = {
-      success: false
-    }
-    return next
-  }
-
-  try {
-    // sms.send(user.phoneNumber, verifyCode)
-  } catch (e) {
-    this.body = {
       success: false,
-      err: '短信服务异常'
+      msg: '注册失败'
     }
-
     return next
   }
 
 }
-
 
 /**
  * 更新用户信息操作
@@ -105,7 +104,6 @@ exports.update = async (ctx, next) => {
 /**
  * 获取验证码
  * */
-
 exports.sendmsg = async (ctx, next) => {
 
   var phoneNumber = ctx.request.body.phoneNumber
@@ -145,8 +143,62 @@ exports.sendmsg = async (ctx, next) => {
   }
 }
 /**
- * 验证
+ * 手机号码认证
  * */
 exports.verify = async (ctx, next) => {
- 
+  var verifyCode = ctx.request.body.verifyCode
+  var phoneNumber = ctx.request.body.phoneNumber
+  if (!verifyCode || !phoneNumber) {
+    ctx.body = {
+      success: false,
+      msg: '手机号码或验证码为空'
+    }
+    return next
+  }
+
+  var user = await User.findOne({
+    phoneNumber: phoneNumber,
+    verifyCode: verifyCode
+  }).exec()
+
+  if(user) {
+    user.verified = true
+    user = await user.save()
+    ctx.body = {
+      success: false,
+      data: {
+        nickname: user.nickname,
+        accessToken: user.accessToken,
+        avatar: user.avatar,
+        _id: user._id
+      }
+    }
+  } else {
+    ctx.body = {
+      success: false,
+      meg: '验证未通过'
+    }
+  }
+}
+
+/**
+ * 删除用户
+ * */
+exports.delUser = async (ctx, next) => {
+  const phoneNumber = xss(ctx.request.body.phoneNumber.trim())
+
+	await User.remove({phoneNumber}, (err) => {
+		if(err) {
+      ctx.body = {
+        success: false,
+        msg: '删除失败'
+      }
+		}else{
+      ctx.body = {
+        success: true,
+        msg: '删除成功'
+      }
+		}
+	})
+
 }

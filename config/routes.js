@@ -19,6 +19,7 @@ module.exports = function() {
   router.post('/u/signup', App.hasBody, User.signup)
   router.post('/u/sendmsg', User.sendmsg)
   router.post('/u/verify', User.verify)
+  router.post('/u/delUser', App.hasBody, User.delUser)
   router.post('/u/update', App.hasBody, App.hasToken, User.update)
 
   // app

@@ -14,6 +14,7 @@ exports.signature = async (ctx, next) => {
 
 exports.hasBody = async (ctx, next) => {
   var body = ctx.request.body || {}
+  console.log(body)
   if (Object.keys(body).length === 0) {
     ctx.body = {
       success: false,
@@ -22,7 +23,7 @@ exports.hasBody = async (ctx, next) => {
     return next
   }
 
-  await next
+  await next()
 }
 // 检验token
 exports.hasToken = async (ctx, next) => {

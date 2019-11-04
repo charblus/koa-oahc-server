@@ -17,7 +17,7 @@
     "koa-router": "^7.4.0",
     "koa-session": "^5.12.3",
     "lodash": "^4.17.15",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.5",
     "sha1": "^1.1.1",
     "speakeasy": "^2.0.0",
     "uuid": "^3.3.3",

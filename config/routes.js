@@ -16,11 +16,13 @@ module.exports = function() {
 
   // user
   router.get('/test',  User.test)
+  router.post('/u/users', User.users)
   router.post('/u/signup', App.hasBody, User.signup)
   router.post('/u/sendmsg', User.sendmsg)
   router.post('/u/verify', User.verify)
   router.post('/u/delUser', App.hasBody, User.delUser)
   router.post('/u/update', App.hasBody, App.hasToken, User.update)
+  router.post('/u/login', App.hasBody, User.login)
 
   // app
   router.post('/signature', App.signature)   // 加密的签名

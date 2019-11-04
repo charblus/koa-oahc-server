@@ -72,6 +72,43 @@ exports.signup = async (ctx, next) => {
 }
 
 /**
+ * 登录
+ * */
+exports.login = async (ctx, next) => {
+  var phoneNumber = ctx.request.body.phoneNumber
+  var password = ctx.request.body.password
+  if (!password || !phoneNumber) {
+    ctx.body = {
+      success: false,
+      msg: '手机号码或密码为空'
+    }
+    return next
+  }
+  var user = await User.findOne({
+    phoneNumber: phoneNumber,
+    password: password
+  }).exec()
+  if (!user) {
+    ctx.body = {
+      success: false,
+      msg: '密码错误',
+    }
+  } else {
+    ctx.body = {
+      success: true,
+      msg: '登录成功',
+      data: {
+        nickname: user.nickname,
+        accessToken: user.accessToken,
+        avatar: user.avatar,
+        _id: user._id
+      }
+    }
+  }
+
+
+}
+/**
  * 更新用户信息操作
  * */
 exports.update = async (ctx, next) => {
@@ -90,8 +127,8 @@ exports.update = async (ctx, next) => {
   ctx.body = {
     code: 1,
     data: {
-      nickname: user.nickname,
       accessToken: user.accessToken,
+      nickname: user.nickname,
       avatar: user.avatar,
       age: user.age,
       breed: user.breed,
@@ -202,3 +239,20 @@ exports.delUser = async (ctx, next) => {
 	})
 
 }
+/**
+ * 查找所有用户
+ * */
+exports.users = async (ctx, next) => {
+  var phoneNumber = ctx.request.body.phoneNumber
+  var data = []
+  if(!phoneNumber) {
+    data = await User.find({}).exec()
+  } else {
+    data = await User.find({phoneNumber}).exec()
+  }
+  ctx.body = {
+    success: true,
+    data: data
+  }
+}
+

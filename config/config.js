@@ -3,12 +3,12 @@
 module.exports = {
   qiniu: {
     video: 'http://oay-yc.s3-cn-east-1.qiniucs.com',
-    AK: 'NlAeVZwYeqm4KPxRHWs_lmbSXoDSqNxK2osKC62O',
-    SK: 'm90diELClUO_DBVbSq7kFBo2sj0Dcb1907rDlSW1'
+    AK: '',
+    SK: ''
   },
   aliyun: {
-    accessKeyId: 'LTAI4FdsXMpqAYZrgAXqvAfv',
-    secretAccessKey: 'FemAuqzp4PWjx0DTNwnOpUncyoTYbi',
+    accessKeyId: '',
+    secretAccessKey: '',
     errorMap: {
       'OK': '请求成功',
       'isp.RAM_PERMISSION_DENY': 'RAM权限DENY',

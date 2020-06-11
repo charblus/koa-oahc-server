@@ -7,8 +7,8 @@ module.exports = {
     SK: 'm90diELClUO_DBVbSq7kFBo2sj0Dcb1907rDlSW1'
   },
   aliyun: {
-    accessKeyId: 'LTAI4FdsXMpqAYZrgAXqvAfv',
-    secretAccessKey: 'FemAuqzp4PWjx0DTNwnOpUncyoTYbi',
+    accessKeyId: '',
+    secretAccessKey: '',
     errorMap: {
       'OK': '请求成功',
       'isp.RAM_PERMISSION_DENY': 'RAM权限DENY',
